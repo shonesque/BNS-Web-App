@@ -1,0 +1,52 @@
+/* div.row.features-big{
+    padding: 5rem;
+    width: 70%;
+    margin: 0 auto;
+} */
+
+p.top-p{
+    color: #014A92;
+    width: 90%;
+    margin: 0 auto;
+}
+
+span.text-bottom{
+    margin-bottom: 5rem!important;
+    color: #014A92;
+    font-size: 20px;
+    color: black;
+}
+span.title-top {
+    text-transform: uppercase;
+    color: #014A92;
+}
+
+span.title-bottom {
+    text-transform: capitalize;
+    margin-bottom: 5rem!important;
+    color: #014A92;
+}
+
+div.learning-objectives {
+    /* width: 80%; */
+    margin: 0 auto;
+    background-color: #f3f3f3;
+    padding: 2rem;
+}
+div.learning-objectives i {
+    color: #014A92;
+}
+
+div.learning-objectives p{
+    color :#014A92;
+    font-size: 20px;
+    font-weight: 300;
+}
+
+div.left-question {
+    padding-left: 2rem!important;
+}
+
+div.right-question {
+    padding-right: 2rem!important;
+}

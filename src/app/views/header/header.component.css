@@ -1,0 +1,17 @@
+div.full-bg-img{
+    height: 60vh;
+}
+
+div.full-bg-img ul {
+  list-style-type: none;
+  color: #fff;
+}
+
+div.full-bg-img li h1{
+  padding-top: 15rem;
+}
+div.full-bg-img a{
+  color: #fff;
+  background-color: #E62137;
+  border: none;
+}

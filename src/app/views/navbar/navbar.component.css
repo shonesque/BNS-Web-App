@@ -1,0 +1,11 @@
+/* navbar styles */
+nav.navbar{
+    border-radius: 0;
+    background-color: #E62137; 
+    outline: none;
+    margin-bottom: 0;
+}
+
+nav.navbar li {
+    cursor: pointer;
+}
