@@ -7,11 +7,10 @@
 p.top-p{
     color: #014A92;
     width: 90%;
-    margin: 0 auto;
 }
 
 span.text-bottom{
-    margin-bottom: 5rem!important;
+    /*margin-bottom: 5rem!important;*/
     color: #014A92;
     font-size: 20px;
     color: black;
@@ -23,15 +22,14 @@ span.title-top {
 
 span.title-bottom {
     text-transform: capitalize;
-    margin-bottom: 5rem!important;
+    /*margin-bottom: 5rem!important;*/
     color: #014A92;
 }
 
 div.learning-objectives {
     /* width: 80%; */
-    margin: 0 auto;
     background-color: #f3f3f3;
-    padding: 2rem;
+    /*padding: 2rem;*/
 }
 div.learning-objectives i {
     color: #014A92;
@@ -44,9 +42,9 @@ div.learning-objectives p{
 }
 
 div.left-question {
-    padding-left: 2rem!important;
+    /*padding-left: 2rem!important;*/
 }
 
 div.right-question {
-    padding-right: 2rem!important;
+    /*padding-right: 2rem!important;*/
 }
