@@ -1,42 +1,82 @@
 
 
-    <div class="login__page">
-      <div class="row">
-          <div class="card col-md-4 col-md-offset-4">
-            <div class="login__card">
-              <div class="card-block">
-                  
-                  <form name="userform" method="post" #formCtrl="ngForm">
-                    <h3 align="center">Login Form</h3>
-                    <h4 class="pt-1" style="text-align: center;">Contact the administrator if you don't remember your credentials.</h4>
-                    <div class="form-group">
-                      <label for="firstName">First Name</label>
-                      <input type="text" class="form-control" [(ngModel)]="user.firstName" name="firstName" placeholder="First Name" required>
-                    </div>
-                    <div class="form-group">
-                      <label for="lastName">Last name</label>
-                      <input type="text" class="form-control" [(ngModel)]="user.lastName" name="lastName" placeholder="Last Name" required>
-                    </div>
-                    <div class="form-group">
-                      <label for="exampleInputEmail1">Email address</label>
-                      <input type="email" class="form-control" [(ngModel)]="user.email" name="email" placeholder="Email" required>
-                    </div>
-                    <div class="form-group">
-                      <label for="exampleInputPassword1">Password</label>
-                      <input type="password" class="form-control" [(ngModel)]="user.password" name="password" placeholder="Password" required>
-                    </div>
+<div class="login__page">
+  <div class="row">
+    <div class="card col-md-4 col-md-offset-4">
+      <div class="login__card">
+        <div class="card-block">
+          <ng-container *ngIf="user | async; else login">
 
-                    <div class="form-group">
-                        <a type="submit" href="../../../assets/course/index.html" class="btn btn-primary btn-block" style="margin-bottom: 20px" (click)="signInWithEmail()">
-                            Register to course
-                        </a>
-                    </div>
-                  </form>
-                  
-              </div>
+            <h3 align="center"> Congratulations!</h3>
+            <h4 align="center">Please enter your first and last name, and proceed to the course! </h4>
+
+
+            <div class="form-group">
+              <label for="firstName">First Name</label>
+              <input type="text" class="form-control" [(ngModel)]="firstName" name="firstName" placeholder="First Name" required>
             </div>
-          </div>
+            <div class="form-group">
+              <label for="lastName">Last name</label>
+              <input type="text" class="form-control" [(ngModel)]="lastName" name="lastName" placeholder="Last Name" required>
+            </div>
 
+            <div class="row">
+
+              <button
+                class="btn btn-primary"
+                onclick="location.href='../../../assets/course/index.html'"
+                type="button"
+                (click)="startCourse()"
+              >
+                Proceed to the course!
+              </button>
+
+              <button
+                class="btn btn-default"
+                (click)="logout()"
+              >
+                Or, Logout and enter a new email address.
+              </button>
+            </div>
+
+          </ng-container>
+
+        </div>
       </div>
-    </div> <!-- end card -->
+    </div>
+  </div>
+</div>
+
+
+<ng-template #login>
+
+  <form name="userform" method="post" #formCtrl="ngForm">
+    <h3 align="center">Authenticate yourself</h3>
+    <div class="form-group">
+      <label for="email">Email address</label>
+      <input
+        type="email"
+        class="form-control"
+        [(ngModel)]="email"
+        name="email"
+        placeholder="Email"
+        required
+      >
+    </div>
+
+    <div class="form-group">
+      <button
+        [disabled]="emailSent"
+        type="submit"
+        class="btn btn-primary"
+        (click)="sendEmailLink()"
+      >
+        Get Login Link!
+      </button>
+    </div>
+  </form>
+
+  <div *ngIf="emailSent"> Cool! We sent you an email with your login link. </div>
+  <div *ngIf="errorMessage"> {{ errorMessage }} </div>
+</ng-template>
 

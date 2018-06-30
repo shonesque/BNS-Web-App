@@ -14,7 +14,6 @@ const appRoutes: Routes = [
         path: 'login',
         component: LoginComponent
     }
-
 ];
 
 export const AppRoutes = RouterModule.forRoot(appRoutes);
