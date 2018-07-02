@@ -77,6 +77,9 @@ export class LoginComponent implements OnInit {
   }
   
   startCourse() {
+  
+    //  TODO: Update the user display name.
+    //  TODO: Launch URL.
     
     this.authService.updateDisplayName(this.fullName);
     
