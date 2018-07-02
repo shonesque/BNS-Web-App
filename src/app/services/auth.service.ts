@@ -2,86 +2,117 @@ import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
 
 import { AngularFireAuth } from 'angularfire2/auth';
-import * as firebase from 'firebase/app';
 import { Observable } from 'rxjs/Observable';
-import { last } from '@angular/router/src/utils/collection';
-import {actionCodeSettings} from "../../environments/environment";
+import { actionCodeSettings } from "../../environments/environment";
+
+import * as firebase from 'firebase/app'
+
 
 @Injectable()
 export class AuthService {
   private user: Observable<firebase.User>;
   private userDetails: firebase.User = null;
-
-  constructor(public firebaseAuth: AngularFireAuth, private router: Router) {
-      this.user = firebaseAuth.authState;
-
-      // this.user.subscribe(
-      //   (user) => {
-      //     if (user) {
-      //       this.userDetails = user;
-      //       console.log(this.userDetails);
-      //     } else {
-      //       this.userDetails = null;
-      //     }
-      //   }
-      // );
-  }
-
-
-  signUp(firstName: string, lastName:string, email: string, password: string){
-    firebase.auth().createUserWithEmailAndPassword(email, password).catch(
-      error => console.log('Error on creating user')
-    )
-  }
-
-  signInWithTwitter() {
-    return this.firebaseAuth.auth.signInWithPopup(
-      new firebase.auth.TwitterAuthProvider()
-    )
-  }
-
-
-  signInWithFacebook() {
-    return this.firebaseAuth.auth.signInWithPopup(
-      new firebase.auth.FacebookAuthProvider()
-    )
-  }
-
-  signInWithGoogle() {
-    return this.firebaseAuth.auth.signInWithPopup(
-      new firebase.auth.GoogleAuthProvider()
-    )
-  }
-
-  signInWithGithub() {
-    return this.firebaseAuth.auth.signInWithPopup(
-      new firebase.auth.GithubAuthProvider()
-    )
+  
+  constructor(public firebaseAuth: AngularFireAuth,
+              private router: Router) {
+    
+    this.user = firebaseAuth.authState;
+    
+    this.user.subscribe(
+      (user) => {
+        if (user) {
+          this.userDetails = user;
+          console.log(this.userDetails);
+        } else {
+          this.userDetails = null;
+        }
+      }
+    );
   }
   
-  sendEmailLink(email: string) {
+  sendEmailLink(email: string, fullName: string): Promise<boolean> {
     
+    return new Promise((resolve, reject) => {
+      
+      try {
+        
+        this.firebaseAuth.auth
+          .sendSignInLinkToEmail(email, actionCodeSettings)
+          .then(
+            () => {
+            window.localStorage.setItem('emailForSignIn', email);
+            console.log("Done.");
+            resolve(true);
+          })
+          .catch(
+            (error) => {
+              reject(error.message);
+            }
+          );
+        
+      } catch (error) {
+        reject(error.message);
+      }
+    });
     
   }
-
-  signInRegular(email, password) {
-    const credential = firebase.auth.EmailAuthProvider.credential( email, password );
-
-    return this.firebaseAuth.auth.signInWithEmailAndPassword(email, password)
+  
+  updateDisplayName(fullName: string) {
+    console.log('Name to be updated: ', fullName);
+    
+    this.firebaseAuth.auth.currentUser.updateProfile({
+      displayName: fullName,
+      photoURL: null
+    });
   }
-
-
+  
+  isSignedInWithTheCorrectURL(url: string): boolean {
+    return this.firebaseAuth.auth.isSignInWithEmailLink(url);
+  }
+  
+  signIn(email: string, url: string): Promise<any> {
+    
+    return new Promise((resolve, reject) => {
+      try {
+    
+        // Signin user and remove the email localStorage
+        this.firebaseAuth.auth
+          .signInWithEmailLink(email, url)
+          .then((user) => {
+            resolve(user);
+          })
+          .catch((error) => {
+            reject(error);
+            this.user = null;
+          });
+        
+        window.localStorage.removeItem('emailForSignIn');
+        
+    
+      } catch (err) {
+        reject(err.message);
+      }
+    });
+  }
+  
+  emailFromLocalStorage(): string {
+    return window.localStorage.getItem('emailForSignIn');
+  }
+  
   isLoggedIn() {
-  if (this.userDetails == null ) {
-      return false;
-    } else {
-      return true;
-    }
+    return this.userDetails != null;
   }
-
-
+  
+  
   logout() {
-    this.firebaseAuth.auth.signOut()
-    .then((res) => this.router.navigate(['/']));
+    window.localStorage.removeItem('emailForSignIn');
+    
+    this.firebaseAuth.auth
+      .signOut()
+      .then((res) => this.router.navigate(['/']));
+  }
+  
+  removeEmailFromLocalStorage() {
+    window.localStorage.removeItem('emailForSignIn');
   }
 }

@@ -1,82 +1,106 @@
+<div class="container">
+      <ng-container *ngIf="linkConfirmed; else login">
 
+        <h3 align="center"> Congratulations!</h3>
+        <h4 align="center">You may now proceed to the course! </h4>
 
-<div class="login__page">
-  <div class="row">
-    <div class="card col-md-4 col-md-offset-4">
-      <div class="login__card">
-        <div class="card-block">
-          <ng-container *ngIf="user | async; else login">
+        <div class="row form-signin">
 
-            <h3 align="center"> Congratulations!</h3>
-            <h4 align="center">Please enter your first and last name, and proceed to the course! </h4>
-
-
-            <div class="form-group">
-              <label for="firstName">First Name</label>
-              <input type="text" class="form-control" [(ngModel)]="firstName" name="firstName" placeholder="First Name" required>
-            </div>
-            <div class="form-group">
-              <label for="lastName">Last name</label>
-              <input type="text" class="form-control" [(ngModel)]="lastName" name="lastName" placeholder="Last Name" required>
-            </div>
-
-            <div class="row">
-
-              <button
-                class="btn btn-primary"
-                onclick="location.href='../../../assets/course/index.html'"
-                type="button"
-                (click)="startCourse()"
-              >
-                Proceed to the course!
-              </button>
-
-              <button
-                class="btn btn-default"
-                (click)="logout()"
-              >
-                Or, Logout and enter a new email address.
-              </button>
-            </div>
-
-          </ng-container>
+          <button
+            class="btn btn-lg btn-primary btn-block"
+            onclick="location.href='../../../assets/course/index.html'"
+            type="button"
+            (click)="startCourse()"
+          >
+            Proceed!
+          </button>
 
         </div>
-      </div>
-    </div>
-  </div>
+
+        <div class="row form-signin">
+          <button
+            class="btn btn-block btn-light btn-sm"
+            (click)="logout()"
+          >
+            Or, Logout and enter a new email address.
+          </button>
+        </div>
+
+      </ng-container>
+
 </div>
 
 
 <ng-template #login>
 
-  <form name="userform" method="post" #formCtrl="ngForm">
-    <h3 align="center">Authenticate yourself</h3>
+  <form
+    name="userform"
+    method="post"
+    #formCtrl="ngForm"
+    class="text-center form-signin"
+  >
+
+    <h3 align="mb-3 center">Authenticate yourself</h3>
+    <h5 align="mb-3 center">Sign in passwordlessly! We'll send you an email with an access link in order to verify your account.</h5>
     <div class="form-group">
-      <label for="email">Email address</label>
+      <!--<label for="email">Email address</label>-->
       <input
         type="email"
         class="form-control"
         [(ngModel)]="email"
         name="email"
-        placeholder="Email"
+        placeholder="Email address"
         required
       >
+      <small
+        class="form-text text-muted"
+        *ngIf="errorMessage"
+      >
+        {{ errorMessage }}
+      </small>
+    </div>
+
+    <div class="form-group">
+      <!--<label for="fullName">Full Name</label>-->
+      <input type="text"
+             class="form-control"
+             [(ngModel)]="fullName"
+             name="fullName"
+             placeholder="Full Name"
+             required
+      >
+    </div>
+
+    <div class="form-group">
+      <select
+        class="form-control"
+        required
+      >
+        <option>Select your company...</option>
+        <option>Company 1</option>
+        <option>Company 2</option>
+        <option>Company 3</option>
+      </select>
     </div>
 
     <div class="form-group">
       <button
         [disabled]="emailSent"
         type="submit"
-        class="btn btn-primary"
+        class="btn btn-lg btn-primary btn-block"
         (click)="sendEmailLink()"
       >
         Get Login Link!
       </button>
     </div>
+
   </form>
 
-  <div *ngIf="emailSent"> Cool! We sent you an email with your login link. </div>
-  <div *ngIf="errorMessage"> {{ errorMessage }} </div>
+  <div class="alert alert-success"
+       role="alert"
+       *ngIf="emailSent"
+  >
+    Cool! We sent you an email with your login link.
+  </div>
 </ng-template>
 

@@ -9,3 +9,9 @@ export const environment = {
     messagingSenderId: "239972644790"
   }
 };
+
+export const actionCodeSettings = {
+  // Your redirect URL
+  url: 'http://localhost:4200/login',
+  handleCodeInApp: true,
+};
