@@ -40,3 +40,8 @@ testem.log
 # System Files
 .DS_Store
 Thumbs.db
+
+
+# media
+src/assets/course
+src/assets/demo
