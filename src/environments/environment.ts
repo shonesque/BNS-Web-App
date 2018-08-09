@@ -18,6 +18,6 @@ export const environment = {
 
 export const actionCodeSettings = {
   // Your redirect URL
-  url: 'localhost:4200/login',
+  url: 'actionablescience.com/login',
   handleCodeInApp: true,
 };
