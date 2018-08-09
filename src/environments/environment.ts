@@ -18,6 +18,6 @@ export const environment = {
 
 export const actionCodeSettings = {
   // Your redirect URL
-  url: 'http://actionablescience.com/login',
+  url: 'https:/https://looselipssinkcompanies.com/online/login',
   handleCodeInApp: true,
 };
