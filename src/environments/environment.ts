@@ -18,6 +18,6 @@ export const environment = {
 
 export const actionCodeSettings = {
   // Your redirect URL
-  url: 'https://looselipssinkcompanies.com/online/login',
+  url: 'localhost:4200/login',
   handleCodeInApp: true,
 };
