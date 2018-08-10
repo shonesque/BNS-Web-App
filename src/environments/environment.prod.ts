@@ -11,8 +11,7 @@ export const environment = {
 };
 
 export const actionCodeSettings = {
-  // Your redirect URL
-  //  TODO: Change this URL
+  // Redirect URL
   url: 'https://looselipssinkcompanies.com/online/login',
   handleCodeInApp: true,
 };
