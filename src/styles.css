@@ -2,11 +2,6 @@
 @import "~bootstrap/dist/css/bootstrap.min.css";
 @import "~font-awesome/css/font-awesome.css";
 
-body {
-  padding-top: 20px;
-  padding-bottom: 20px;
-}
-
 .navbar {
   margin-bottom: 20px;
 }
