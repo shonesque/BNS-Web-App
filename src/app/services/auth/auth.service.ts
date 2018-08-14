@@ -3,13 +3,14 @@ import { Router } from '@angular/router';
 
 import { AngularFireAuth } from 'angularfire2/auth';
 import { Observable } from 'rxjs/Observable';
-import { actionCodeSettings } from "../../environments/environment";
+import { actionCodeSettings } from "environments/environment";
 
-import * as firebase from 'firebase/app'
+import * as firebase from 'firebase';
 
 
 @Injectable()
 export class AuthService {
+  
   private user: Observable<firebase.User>;
   private userDetails: firebase.User = null;
   
@@ -40,9 +41,11 @@ export class AuthService {
           .sendSignInLinkToEmail(email, actionCodeSettings)
           .then(
             () => {
-            window.localStorage.setItem('emailForSignIn', email);
-            console.log("Done.");
-            resolve(true);
+            
+              window.localStorage.setItem('emailForSignIn', email);
+              window.localStorage.setItem('fullName', fullName);
+            
+              resolve(true);
           })
           .catch(
             (error) => {
@@ -57,10 +60,10 @@ export class AuthService {
     
   }
   
-  updateDisplayName(fullName: string) {
+  updateDisplayName(fullName: string): any {
     console.log('Name to be updated: ', fullName);
     
-    this.firebaseAuth.auth.currentUser.updateProfile({
+    return this.firebaseAuth.auth.currentUser.updateProfile({
       displayName: fullName,
       photoURL: null
     });
@@ -70,12 +73,12 @@ export class AuthService {
     return this.firebaseAuth.auth.isSignInWithEmailLink(url);
   }
   
-  signIn(email: string, url: string): Promise<any> {
+  signIn(email: string, url: string): Promise<firebase.auth.UserCredential> {
     
     return new Promise((resolve, reject) => {
       try {
     
-        // Signin user and remove the email localStorage
+        // Signin user and remove the email/name from the localStorage
         this.firebaseAuth.auth
           .signInWithEmailLink(email, url)
           .then((user) => {
@@ -86,7 +89,8 @@ export class AuthService {
             this.user = null;
           });
         
-        window.localStorage.removeItem('emailForSignIn');
+        this.removeEmailFromLocalStorage();
+        this.removeFullNameFromLocalStorage();
         
     
       } catch (err) {
@@ -99,13 +103,17 @@ export class AuthService {
     return window.localStorage.getItem('emailForSignIn');
   }
   
+  fullNameFromLocalStorage(): string {
+    return window.localStorage.getItem('fullName');
+  }
+
   isLoggedIn() {
     return this.userDetails != null;
   }
   
-  
   logout() {
-    window.localStorage.removeItem('emailForSignIn');
+    this.removeEmailFromLocalStorage();
+    this.removeFullNameFromLocalStorage();
     
     this.firebaseAuth.auth
       .signOut()
@@ -114,5 +122,10 @@ export class AuthService {
   
   removeEmailFromLocalStorage() {
     window.localStorage.removeItem('emailForSignIn');
+  }
+
+
+  removeFullNameFromLocalStorage() {
+    window.localStorage.removeItem('fullName');
   }
 }
