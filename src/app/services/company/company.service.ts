@@ -31,7 +31,7 @@ export class CompanyService {
                 }
     
                 if (company.user_emails.indexOf(userEmail) > -1) {
-                    reject("The user is not new.");
+                    resolve();
                     return;
                 }
     
