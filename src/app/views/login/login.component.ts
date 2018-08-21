@@ -3,6 +3,7 @@ import { Router } from '@angular/router';
 import { AuthService } from '../../services/auth/auth.service';
 import { User } from '../../models/user';
 import { UserService } from '../../services/user/user.service';
+import { CompanyService } from '../../services/company/company.service';
 
 
 
@@ -22,13 +23,11 @@ export class LoginComponent implements OnInit {
   
   constructor(private authService: AuthService,
               private router: Router,
-              private usersService: UserService) { }
+              private usersService: UserService, 
+              private companiesService: CompanyService) { }
   
   ngOnInit() {
-    
     const url = this.router.url;
-    console.log("init email: ", this.email);
-    
     this.confirmSignIn(url);
   }
   
@@ -40,12 +39,10 @@ export class LoginComponent implements OnInit {
       .sendEmailLink(this.email, this.fullName)
       .then(
         (success: boolean) => {
-          console.log(success);
           this.emailSent = success;
         })
       .catch(
         (errorMessage) => {
-          console.log(errorMessage);
           this.errorMessage = errorMessage
         });
   }
@@ -71,33 +68,37 @@ export class LoginComponent implements OnInit {
       .signIn(email, url)
       .then((userCredential) => {
         this.linkConfirmed = true;
-
-        //  Check if the user is new.
-        if (!userCredential.additionalUserInfo.isNewUser) {
-          //  If the user is not new, don't do anything.
-          return;
-        }
         
-        //  If the user is new
-        this.authService
-        //  update his name
+        this.companiesService
+        .increaseNumberOfUsedLicensesFor(email)
+        .then( () => {
+          
+          //  If the user is new
+          //  update his name
+          this.authService
           .updateDisplayName(fullName)
           .then(() => {
-              console.log('updated his name?');
+            
+              //  Check if the user is new.
+              if (!userCredential.additionalUserInfo.isNewUser) {
+                //  If the user is not new, don't do anything.
+                return;
+              }
 
               //  Create a new user object into DB
               let newUser = new User(userCredential.user.displayName, userCredential.user.email);
               this.usersService
                 .createUser(newUser)
-                .then( user => {
-                  console.log('BAAAm');
-                  console.log(user);
-                })
                 .catch( message => {
                     this.errorMessage = message;
                 });
             }
           );
+        })
+        .catch( error => {
+          this.linkConfirmed = false;
+          this.errorMessage = error;
+        });        
       })
       .catch(() => {
         this.errorMessage = "The link maybe was malformed or expired. Please get a new sign in link." ;

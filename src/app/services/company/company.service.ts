@@ -2,28 +2,55 @@ import { Injectable } from "@angular/core";
 import { AngularFireList, AngularFireDatabase } from "angularfire2/database";
 
 import { Company } from "app/models/company";
+import { resolve, reject } from "q";
 
 
 @Injectable()
 export class CompanyService {
     
-    private databasePath = '/company';
+    private databasePath = '/companies';
     companiesRef: AngularFireList<Company> = null;
 
     constructor(private db: AngularFireDatabase) {
-        this.companiesRef = db.list(this.databasePath);
+        this.companiesRef = db.list(this.databasePath, 
+            ref => ref.orderByChild('name').equalTo("GeneralCompanyTest"));
     }
 
-    increaseNumberOfUsedLicenses(): void {
-        console.log("increaseNumberOfUsedLicenses");
-        // this.updateCompany("current_licenses", );
-    }
+    increaseNumberOfUsedLicensesFor(userEmail: string): any {
 
-    updateCompany(key: string, value: any): void {
-        this.companiesRef.update(key, value).catch(error => this.handleError(error));
-    }
+        return new Promise((resolve, reject) => {
+            this.companiesRef
+            .valueChanges()
+            .subscribe(companies => {
+                let company = companies[0];
+    
+                let newNumberOfUsedLicenses = company.current_licenses + 1;
+                if (newNumberOfUsedLicenses > company.max_licenses) {
+                    reject("The current subscription has reached the maximum limit of licenses.");
+                    return;
+                }
+    
+                if (company.user_emails.indexOf(userEmail) > -1) {
+                    reject("The user is not new.");
+                    return;
+                }
+    
+                company.user_emails.push(userEmail);
+                let updatedUserEmailsArray = company.user_emails;
+    
+                    
+                this.db
+                .object(this.databasePath + '/1')
+                .update({
+                    current_licenses: newNumberOfUsedLicenses,
+                    user_emails: updatedUserEmailsArray
+                })
+                .then( () => {
+                    resolve();
+                });
+            });
+        });
 
-    handleError(error): void {
-        console.log(error);
+        
     }
 }

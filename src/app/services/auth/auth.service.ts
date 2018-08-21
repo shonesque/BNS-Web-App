@@ -23,7 +23,6 @@ export class AuthService {
       (user) => {
         if (user) {
           this.userDetails = user;
-          console.log(this.userDetails);
         } else {
           this.userDetails = null;
         }
@@ -61,7 +60,6 @@ export class AuthService {
   }
   
   updateDisplayName(fullName: string): any {
-    console.log('Name to be updated: ', fullName);
     
     return this.firebaseAuth.auth.currentUser.updateProfile({
       displayName: fullName,
@@ -77,7 +75,6 @@ export class AuthService {
     
     return new Promise((resolve, reject) => {
       try {
-    
         // Signin user and remove the email/name from the localStorage
         this.firebaseAuth.auth
           .signInWithEmailLink(email, url)
