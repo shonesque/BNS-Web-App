@@ -75,7 +75,7 @@ export class AuthService {
     
     return new Promise((resolve, reject) => {
       try {
-        // Signin user and remove the email/name from the localStorage
+        // Signin user
         this.firebaseAuth.auth
           .signInWithEmailLink(email, url)
           .then((user) => {
@@ -85,11 +85,6 @@ export class AuthService {
             reject(error);
             this.user = null;
           });
-        
-        this.removeEmailFromLocalStorage();
-        this.removeFullNameFromLocalStorage();
-        
-    
       } catch (err) {
         reject(err.message);
       }
@@ -114,7 +109,11 @@ export class AuthService {
     
     this.firebaseAuth.auth
       .signOut()
-      .then((res) => this.router.navigate(['/']));
+      .then((res) => {
+        this.router.navigate(['/'])
+        this.userDetails = null;
+      }
+    );
   }
   
   removeEmailFromLocalStorage() {

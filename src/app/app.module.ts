@@ -5,7 +5,7 @@ import { AppRoutes } from './app.routes';
 
 import { FormsModule } from '@angular/forms';
 
-import { AppComponent } from './app.component';
+import { AppComponent, SafePipe } from './app.component';
 import { LoginComponent } from './views/login/login.component';
 import { DashboardComponent } from './views/dashboard/dashboard.component';
 
@@ -23,17 +23,20 @@ import { HomeComponent } from './views/home/home.component';
 import { LearningObjectivesComponent } from './views/learning-objectives/learning-objectives.component';
 import { UserService } from './services/user/user.service';
 import { CompanyService } from './services/company/company.service';
+import { CourseComponent } from './views/course/course.component';
 
 @NgModule({
   declarations: [
     AppComponent,
+    SafePipe,
     LoginComponent,
     DashboardComponent,
     HeaderComponent,
     NavbarComponent,
     FooterComponent,
     HomeComponent,
-    LearningObjectivesComponent
+    LearningObjectivesComponent,
+    CourseComponent
   ],
   imports: [
     BrowserModule,

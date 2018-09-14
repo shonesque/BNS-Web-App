@@ -111,25 +111,20 @@ export class LoginComponent implements OnInit {
     //  TODO: Update the user display name.
     //  TODO: Launch URL.
 
-    // this.router
-    // .navigate(['/assets/course/index.html'])
-    // .then( () => {
-      this.authService.removeEmailFromLocalStorage();
-      this.authService.removeFullNameFromLocalStorage();
-
-      this.emailSent = false;
-      this.fullName = "";
-      this.email = "";
-      this.linkConfirmed = false;
-    // });
+    this.router.navigate(['/course'])
+    .then( () => {
+      this.clear();
+    });
   }
   
   logout() {
-    
     this.authService.logout();
-  
+    this.clear();
+  }
+
+  clear() {
+
     this.linkConfirmed = false;
-    
     this.emailSent = false;
     this.fullName = "";
     this.email = "";
