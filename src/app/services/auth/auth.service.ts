@@ -41,7 +41,8 @@ export class AuthService {
           .then(
             () => {
             
-              window.localStorage.setItem('emailForSignIn', email);
+              let lowercaseEmail = email.toLowerCase();
+              window.localStorage.setItem('emailForSignIn', lowercaseEmail);
               window.localStorage.setItem('fullName', fullName);
             
               resolve(true);
@@ -92,7 +93,7 @@ export class AuthService {
   }
   
   emailFromLocalStorage(): string {
-    return window.localStorage.getItem('emailForSignIn');
+    return window.localStorage.getItem('emailForSignIn').toLowerCase();
   }
   
   fullNameFromLocalStorage(): string {

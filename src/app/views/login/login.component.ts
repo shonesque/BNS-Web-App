@@ -6,7 +6,6 @@ import { UserService } from '../../services/user/user.service';
 import { CompanyService } from '../../services/company/company.service';
 
 
-
 @Component({
   selector: 'app-login',
   templateUrl: './login.component.html',
@@ -34,7 +33,8 @@ export class LoginComponent implements OnInit {
   sendEmailLink() {
     
     this.errorMessage = "";
-    
+    this.email = this.email.toLowerCase();
+
     this.authService
       .sendEmailLink(this.email, this.fullName)
       .then(
@@ -60,7 +60,7 @@ export class LoginComponent implements OnInit {
     //  a.k.a. check if the user authenticated from the same browser.
     // If missing email, prompt user for it
     if (!email) {
-      email = window.prompt('Please provide your email for confirmation');
+      email = window.prompt('Please provide your email for confirmation').toLowerCase();
     }
     
     //  Try to sign in
