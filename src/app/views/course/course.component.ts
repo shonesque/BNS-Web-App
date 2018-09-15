@@ -26,8 +26,6 @@ export class CourseComponent implements OnInit {
       
       this.completedURL = this.completedURL + email;
       window.open(this.completedURL, '_blank');
-
-      this.authService.logout();
     });
   }
 }
