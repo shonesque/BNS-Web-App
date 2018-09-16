@@ -33,6 +33,17 @@ export class LoginComponent implements OnInit {
   sendEmailLink() {
     
     this.errorMessage = "";
+
+    if (!this.email) {
+      this.errorMessage = "Please enter a valid email address.";
+      return;
+    }
+
+    if (!this.fullName) {
+      this.errorMessage = "Please enter your full name.";
+      return;
+    }
+
     this.email = this.email.toLowerCase();
 
     this.authService
