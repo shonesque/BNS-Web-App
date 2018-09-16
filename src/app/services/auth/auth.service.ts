@@ -17,6 +17,8 @@ export class AuthService {
   constructor(public firebaseAuth: AngularFireAuth,
               private router: Router) {
     
+    this.firebaseAuth.auth.setPersistence(firebase.auth.Auth.Persistence.LOCAL);
+    
     this.user = firebaseAuth.authState;
     
     this.user.subscribe(
@@ -93,7 +95,12 @@ export class AuthService {
   }
   
   emailFromLocalStorage(): string {
-    return window.localStorage.getItem('emailForSignIn').toLowerCase();
+    let email = window.localStorage.getItem('emailForSignIn');
+    if (!email) {
+      return "";
+    }
+
+    return email.toLowerCase();
   }
   
   fullNameFromLocalStorage(): string {
@@ -105,6 +112,8 @@ export class AuthService {
   }
   
   logout() {
+    debugger;
+
     this.removeEmailFromLocalStorage();
     this.removeFullNameFromLocalStorage();
     

@@ -1,6 +1,7 @@
 import { AuthService } from './auth.service';
 import { Injectable } from '@angular/core';
 import { Router, CanActivate } from '@angular/router';
+import { debug } from 'util';
 
 @Injectable()
 export class AuthGuard implements CanActivate {
@@ -9,7 +10,7 @@ export class AuthGuard implements CanActivate {
               private authService: AuthService) { }
 
   canActivate() {
-    if (this.authService.isLoggedIn()) {
+    if (this.authService.isLoggedIn() || this.authService.emailFromLocalStorage()) {
       return true;
     }
 
