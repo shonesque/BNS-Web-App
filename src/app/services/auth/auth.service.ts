@@ -112,7 +112,6 @@ export class AuthService {
   }
   
   logout() {
-    debugger;
 
     this.removeEmailFromLocalStorage();
     this.removeFullNameFromLocalStorage();
