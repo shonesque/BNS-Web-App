@@ -1,7 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { AuthService } from '../../services/auth/auth.service';
-import { HttpClient } from "@angular/common/http";
+import { HttpClient, HttpHeaders } from "@angular/common/http";
+import { saveAs } from 'file-saver';
 
 @Component({
   selector: 'course',
@@ -25,15 +26,17 @@ export class CourseComponent implements OnInit {
       }
 
       let email = this.authService.emailFromLocalStorage();
-      
       this.completedURL = this.completedURL + email;
-      // window.open(this.completedURL, '_blank');
+      
+      let headers = new HttpHeaders();
+      headers = headers.set('Accept', 'application/pdf');
 
       this.httpClient
-        .get(this.completedURL)
+        .get(this.completedURL, { headers: headers, responseType: 'blob' })
         .toPromise()
         .then(result => {
-          console.log(result);
+          var blob = new Blob([result], { type: 'application/pdf' });
+          saveAs(blob, "Certificate of Completion.pdf");
         })
         .catch(error => {
           console.log(error);
