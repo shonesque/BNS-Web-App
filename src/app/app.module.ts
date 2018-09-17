@@ -24,6 +24,7 @@ import { LearningObjectivesComponent } from './views/learning-objectives/learnin
 import { UserService } from './services/user/user.service';
 import { CompanyService } from './services/company/company.service';
 import { CourseComponent } from './views/course/course.component';
+import { HttpClientModule } from "@angular/common/http";
 
 @NgModule({
   declarations: [
@@ -40,6 +41,7 @@ import { CourseComponent } from './views/course/course.component';
   ],
   imports: [
     BrowserModule,
+    HttpClientModule,
     AppRoutes,
     FormsModule,
     AngularFireModule.initializeApp(environment.firebase, 'angular-auth-firebase'),

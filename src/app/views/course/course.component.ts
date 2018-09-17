@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { AuthService } from '../../services/auth/auth.service';
+import { HttpClient } from "@angular/common/http";
 
 @Component({
   selector: 'course',
@@ -13,7 +14,8 @@ export class CourseComponent implements OnInit {
   completedURL: string = "https://looselipssinkcompanies.com/completion.php?e=";
 
   constructor(private activatedRouterService: ActivatedRoute,
-              private authService: AuthService) { }
+              private authService: AuthService, 
+              private httpClient: HttpClient) { }
 
   ngOnInit() {
 
@@ -25,7 +27,17 @@ export class CourseComponent implements OnInit {
       let email = this.authService.emailFromLocalStorage();
       
       this.completedURL = this.completedURL + email;
-      window.open(this.completedURL, '_blank');
+      // window.open(this.completedURL, '_blank');
+
+      this.httpClient
+        .get(this.completedURL)
+        .toPromise()
+        .then(result => {
+          console.log(result);
+        })
+        .catch(error => {
+          console.log(error);
+        });
     });
   }
 }
