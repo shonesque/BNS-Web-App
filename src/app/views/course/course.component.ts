@@ -2,7 +2,9 @@ import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { AuthService } from '../../services/auth/auth.service';
 import { HttpClient, HttpHeaders } from "@angular/common/http";
-import { saveAs } from 'file-saver';
+import * as jspdf from 'jspdf';  
+import html2canvas from 'html2canvas'; 
+import html2pdf from 'html2pdf.js'
 
 @Component({
   selector: 'course',
@@ -13,6 +15,9 @@ export class CourseComponent implements OnInit {
 
   courseURL: string = "https://looselipssinkcompanies.com/online/assets/course/index.html";
   completedURL: string = "https://looselipssinkcompanies.com/completion.php?e=";
+  completedURLNew: string = "https://backdoorselling.info/certNEW/cert.php?"; //"http://localhost:8888/certLocal.php"
+  imagesHostURL: string = "https://backdoorselling.info/certNEW/";//"http://localhost:8888/";//
+
 
   constructor(private activatedRouterService: ActivatedRoute,
               private authService: AuthService, 
@@ -27,20 +32,50 @@ export class CourseComponent implements OnInit {
 
       let email = this.authService.emailFromLocalStorage();
       this.completedURL = this.completedURL + email;
-      
+
+      let fullName = this.authService.fullNameFromLocalStorage();
+      this.completedURLNew += "?fname=" + fullName;
+
+
       let headers = new HttpHeaders();
-      headers = headers.set('Accept', 'application/pdf');
+      headers = headers.set('Accept', 'text/html, application/xhtml+xml, application/xml');
 
       this.httpClient
-        .get(this.completedURL, { headers: headers, responseType: 'blob' })
+        .get(this.completedURLNew, { headers: headers, responseType: 'text' })
         .toPromise()
-        .then(result => {
-          var blob = new Blob([result], { type: 'application/pdf' });
-          saveAs(blob, "Certificate of Completion.pdf");
+        .then(htmlResult => {
+
+          const parser = new DOMParser();
+          const parsedHTML = parser.parseFromString(htmlResult, "text/html");
+          const imgs = parsedHTML.images;
+
+          for (let i = 0; i < imgs.length; i++) {
+            imgs[i].src = "assets/" + imgs[i].src.substr(imgs[i].src.lastIndexOf('/') + 1);
+          }
+
+          const serializer = new XMLSerializer();
+          const htmlString = serializer.serializeToString(parsedHTML);
+
+          this.exportPdf(htmlString);
+
         })
-        .catch(error => {
-          console.log(error);
-        });
+        .catch(error => console.log(error));
     });
+  }
+
+  exportPdf(htmlString: string) {
+
+    const opt = {
+      filename: 'Certificate of Completion.pdf',
+      image:        { type: 'jpeg', quality: 0.98 },
+      jsPDF: { 
+        unit: 'mm', 
+        orientation: 'landscape' }
+    };
+
+    html2pdf()
+      .from(htmlString)
+      .set(opt)
+      .save();
   }
 }
