@@ -15,8 +15,8 @@ export class CourseComponent implements OnInit {
 
   courseURL: string = "https://looselipssinkcompanies.com/online/assets/course/index.html";
   completedURL: string = "https://looselipssinkcompanies.com/completion.php?e=";
-  completedURLNew: string = "https://backdoorselling.info/certNEW/cert.php?"; //"http://localhost:8888/certLocal.php"
-  imagesHostURL: string = "https://backdoorselling.info/certNEW/";//"http://localhost:8888/";//
+  completedURLNew: string = "https://looselipssinkcompanies.com/cert/cert.php";
+  imagesHostURL: string = "https://looselipssinkcompanies.com/cert/";
 
 
   constructor(private activatedRouterService: ActivatedRoute,
@@ -50,7 +50,7 @@ export class CourseComponent implements OnInit {
           const imgs = parsedHTML.images;
 
           for (let i = 0; i < imgs.length; i++) {
-            imgs[i].src = "assets/" + imgs[i].src.substr(imgs[i].src.lastIndexOf('/') + 1);
+            imgs[i].src = this.imagesHostURL + imgs[i].src.substr(imgs[i].src.lastIndexOf('/') + 1);
           }
 
           const serializer = new XMLSerializer();
