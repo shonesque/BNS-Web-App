@@ -14,8 +14,7 @@ import html2pdf from 'html2pdf.js'
 export class CourseComponent implements OnInit {
 
   courseURL: string = "https://looselipssinkcompanies.com/online/assets/course/index.html";
-  completedURL: string = "https://looselipssinkcompanies.com/completion.php?e=";
-  completedURLNew: string = "https://looselipssinkcompanies.com/cert/cert.php";
+  completedURL: string = "https://looselipssinkcompanies.com/cert/cert.php";
   imagesHostURL: string = "https://looselipssinkcompanies.com/cert/";
 
 
@@ -24,24 +23,29 @@ export class CourseComponent implements OnInit {
               private httpClient: HttpClient) { }
 
   ngOnInit() {
+    
+    let email = this.authService.emailFromLocalStorage();
+    let fullName = this.authService.fullNameFromLocalStorage();
+    const actorParameter = {
+      "name" : fullName,
+      "mbox" : "mailto:" + email
+    }
+
+    this.courseURL += "?actor=" + JSON.stringify(actorParameter);
 
     this.activatedRouterService.data.subscribe( data => {
+      
       if(!data.completed) {
         return
       }
 
-      let email = this.authService.emailFromLocalStorage();
-      this.completedURL = this.completedURL + email;
-
-      let fullName = this.authService.fullNameFromLocalStorage();
-      this.completedURLNew += "?fname=" + fullName;
-
+      this.completedURL += "?fname=" + fullName;
 
       let headers = new HttpHeaders();
       headers = headers.set('Accept', 'text/html, application/xhtml+xml, application/xml');
 
       this.httpClient
-        .get(this.completedURLNew, { headers: headers, responseType: 'text' })
+        .get(this.completedURL, { headers: headers, responseType: 'text' })
         .toPromise()
         .then(htmlResult => {
 
