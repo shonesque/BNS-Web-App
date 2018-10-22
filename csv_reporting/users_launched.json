@@ -1,0 +1,19 @@
+[
+{
+    "$match": {
+        "$and": [{
+          "statement.verb.id": {
+            "$in": [
+                "http://adlnet.gov/expapi/verbs/launched"
+            ]
+          }  
+        }, {
+            "statement.object.id" : {
+                "$in" : [
+                    "https://howtodealwithbackdoorselling/qorvo/v211018_1.0"
+                ]
+            }
+        }]
+    }
+}
+]
