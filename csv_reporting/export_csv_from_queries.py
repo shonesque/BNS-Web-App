@@ -81,9 +81,6 @@ def read_queries_from_files(files=FILE_QUERIES):
       contents_string = json.dumps(contents)
 
       # Construct the URL (Encode & Append)
-      
-      
-
       if py_version < 3:
           url_param_econded = quote_plus(contents_string)
       else:
@@ -130,7 +127,8 @@ def make_request(url, file_name):
         # print(csv_record.object_course_name)
         # print(csv_record.timestamp + '\n')
 
-      print("The response contains {0} properties".format(len(json_data)))
+      today_string_format = datetime.date.today().strftime('%d_%b_%Y')
+      print("{0}: The response for {1} contains {2} properties".format(today_string_format, file_name,len(json_data)))
       print("\n")
 
       # logFile=open('response_'+ file_name, 'w')
