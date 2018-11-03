@@ -1,4 +1,4 @@
-#! /bin/sh
+#!/usr/bin/env python
 
 """
 This python script is used to generate .csv files from queries that are hold in
@@ -69,11 +69,21 @@ def read_queries_from_files(files=FILE_QUERIES):
     
       
       # Append today's timestamp to the query to get the today's results.
-      now = datetime.datetime.now()
+      today_max = datetime.datetime.combine(datetime.datetime.now(), datetime.datetime.max.time())
+      today_min = datetime.datetime.combine(datetime.datetime.now(), datetime.datetime.min.time())
+
       contents[0]['$match']['$and'].append({ 
           "statement.timestamp" : {
             "$lte" : {
-              "$dte" : now.isoformat()
+              "$dte" : today_max.isoformat()
+            }
+          }
+        }
+      )
+      contents[0]['$match']['$and'].append({ 
+          "statement.timestamp" : {
+            "$gte" : {
+              "$dte" : today_min.isoformat()
             }
           }
         }
@@ -151,7 +161,7 @@ def export_csv(records, file_name):
     'Email address',
     'Status',
     'Course Name',
-    'Timestamp'
+    'Date Completed'
   ]
 
   # Construct the csv file name.
