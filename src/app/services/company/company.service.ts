@@ -22,7 +22,7 @@ export class CompanyService {
             this.companiesRef
             .valueChanges()
             .subscribe(companies => {
-                let company = companies[2];
+                let company = companies[0];
     
                 let newNumberOfUsedLicenses = company.current_licenses + 1;
                 if (newNumberOfUsedLicenses > company.max_licenses) {
