@@ -13,7 +13,7 @@ export class CompanyService {
 
     constructor(private db: AngularFireDatabase) {
         this.companiesRef = db.list(this.databasePath, 
-            ref => ref.orderByChild('name').equalTo("Qorvo"));
+            ref => ref.orderByChild('name').equalTo("Merck"));
     }
 
     increaseNumberOfUsedLicensesFor(userEmail: string): any {
@@ -22,7 +22,7 @@ export class CompanyService {
             this.companiesRef
             .valueChanges()
             .subscribe(companies => {
-                let company = companies[0];
+                let company = companies[2];
     
                 let newNumberOfUsedLicenses = company.current_licenses + 1;
                 if (newNumberOfUsedLicenses > company.max_licenses) {
@@ -39,7 +39,7 @@ export class CompanyService {
                 let updatedUserEmailsArray = company.user_emails;
     
                 this.db
-                .object(this.databasePath + '/0')
+                .object(this.databasePath + '/2')
                 .update({
                     current_licenses: newNumberOfUsedLicenses,
                     user_emails: updatedUserEmailsArray

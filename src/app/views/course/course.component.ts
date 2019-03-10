@@ -13,7 +13,7 @@ import html2pdf from 'html2pdf.js'
 })
 export class CourseComponent implements OnInit {
 
-  courseURL: string = "https://looselipssinkcompanies.com/adapt-assets/index.html";
+  courseURL: string = "https://looselipssinkcompanies.com/merck/adapt-assets/index.html";
   completedURL: string = "https://looselipssinkcompanies.com/cert/cert.php";
   imagesHostURL: string = "https://looselipssinkcompanies.com/cert/";
 

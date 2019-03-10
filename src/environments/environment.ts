@@ -18,6 +18,6 @@ export const environment = {
 
 export const actionCodeSettings = {
   // Redirect URL
-  url: 'https://looselipssinkcompanies.com/qorvo/login',
+  url: 'https://looselipssinkcompanies.com/merck/login',
   handleCodeInApp: true,
 };
